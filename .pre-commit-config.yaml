@@ -1,84 +1,56 @@
-default_stages: [pre-commit, pre-merge-commit, pre-push, prepare-commit-msg,
-        commit-msg, post-checkout, post-commit, post-merge, post-rewrite]
-
-exclude: |
-    (?x)
-    \.(html|csv|svg)$  # Generic text file
+default_stages:
+  [
+    pre-commit,
+    pre-merge-commit,
+    pre-push,
+    prepare-commit-msg,
+    commit-msg,
+    post-checkout,
+    post-commit,
+    post-merge,
+    post-rewrite,
+  ]
 
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
-    -   id: check-added-large-files
-    -   id: check-ast
-    -   id: check-case-conflict
-    -   id: check-illegal-windows-names
-    -   id: check-json
-    -   id: check-merge-conflict
-    -   id: check-symlinks
-    -   id: check-toml
-    -   id: check-vcs-permalinks
-    -   id: check-xml
-    -   id: check-yaml
-    -   id: destroyed-symlinks
-    -   id: detect-private-key
-    -   id: end-of-file-fixer
-    -   id: mixed-line-ending
-    -   id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-illegal-windows-names
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-xml
+      - id: check-yaml
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
 
--   repo: https://github.com/pre-commit/sync-pre-commit-deps
+  - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
     hooks:
-    -   id: sync-pre-commit-deps
+      - id: sync-pre-commit-deps
 
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.20.0
-    hooks:
-    -   id: mypy
-        args:
-        -   --install-types
-        -   --non-interactive
-
--   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.9
-    hooks:
-    -   id: ruff-check  # Run the linter.
-        args: [--fix]
-    -   id: ruff-format # Run the formatter.
-
--   repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.9.1
-    hooks:
-    -   id: nbqa-check-ast
-    -   id: nbqa-mypy
-        additional_dependencies:
-        -   mypy==1.20.0
-        args:
-        -   --install-types
-        -   --non-interactive
-    -   id: nbqa-flake8
-        additional_dependencies:
-        -   flake8==7.3.0
-        -   flake8-pyproject==1.2.3
-        -   pydoclint==0.7.3
-
--   repo: https://github.com/python-jsonschema/check-jsonschema
+  - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.37.1
     hooks:
-    -   id: check-github-actions
-    -   id: check-github-workflows
+      - id: check-github-actions
+      - id: check-github-workflows
 
--   repo: https://github.com/rbubley/mirrors-prettier
+  - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.8.1
     hooks:
-    -   id: prettier
-        name: prettier-markdown
+      - id: prettier
         args:
-        -   "--print-width=88"
-        -   "--prose-wrap=always"
-        types: [markdown]
+          - "--print-width=88"
+          - "--prose-wrap=always"
 
--   repo: https://github.com/jsh9/pydoclint
-    rev: 0.8.3
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v10.2.0
     hooks:
-    -   id: pydoclint
+      - id: eslint
