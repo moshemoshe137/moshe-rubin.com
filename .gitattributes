@@ -1,0 +1,3 @@
+# https://github.com/github/markup/issues/348
+# Show SQL as a language in GitHub stats
+*.sql linguist-detectable=true
