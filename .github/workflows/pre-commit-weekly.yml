@@ -1,6 +1,7 @@
 name: Weekly Pre-commit
 
 on:
+  push:
   workflow_dispatch:
   schedule:
     - cron: "0 9 * * MON"
