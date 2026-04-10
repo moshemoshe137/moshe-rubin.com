@@ -8,8 +8,13 @@ const heroTitleText = document.querySelector("[data-hero-title-text]");
 const cards = document.querySelectorAll(".card");
 const hero = document.querySelector(".hero");
 const heroLede = document.querySelector(".hero .lede");
+const heroEyebrow = document.querySelector(".hero .eyebrow");
+const heroTitle = document.querySelector(".hero h1");
+const heroActions = document.querySelector(".hero-actions");
 const contentGrid = document.querySelector(".content-grid");
 const formEndpoint = "https://formsubmit.co/ajax/1c288caac1d97b49f78246d936563080";
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const sidebarTransitionDuration = 460;
 
 document.documentElement.classList.add("js");
 
@@ -21,7 +26,6 @@ if (yearElement) {
 
 if (heroTitleText) {
   const finalTitle = "moshe rubin";
-  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (reducedMotionQuery.matches) {
     heroTitleText.textContent = finalTitle;
@@ -51,8 +55,6 @@ if (heroTitleText) {
 }
 
 if (cards.length > 0) {
-  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
   if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
     cards.forEach((card) => {
       card.classList.add("is-visible");
@@ -83,6 +85,7 @@ if (cards.length > 0) {
 
 let heroSidebarThreshold = 0;
 const heroSidebarReleaseOffset = 96;
+let pendingSidebarPinTimeout = 0;
 
 const updateHeroSidebarThreshold = () => {
   if (!hero) {
@@ -96,8 +99,88 @@ const updateHeroSidebarThreshold = () => {
   heroSidebarThreshold = Math.max(thresholdTop, 0);
 };
 
+const animateSidebarTransition = (nextPinned) => {
+  const animatedElements = [hero, heroTitle, heroEyebrow, heroLede, heroActions].filter(
+    Boolean,
+  );
+
+  if (animatedElements.length === 0 || reducedMotionQuery.matches) {
+    document.body.classList.toggle("has-sidebar", nextPinned);
+    return;
+  }
+
+  const firstRects = new Map(
+    animatedElements.map((element) => [element, element.getBoundingClientRect()]),
+  );
+
+  document.body.classList.toggle("has-sidebar", nextPinned);
+
+  animatedElements.forEach((element) => {
+    const firstRect = firstRects.get(element);
+    const lastRect = element.getBoundingClientRect();
+
+    if (!firstRect || !lastRect.width || !lastRect.height) {
+      return;
+    }
+
+    const deltaX = firstRect.left - lastRect.left;
+    const deltaY = firstRect.top - lastRect.top;
+    const scaleX = firstRect.width / lastRect.width;
+    const scaleY = firstRect.height / lastRect.height;
+
+    if (
+      Math.abs(deltaX) < 0.5 &&
+      Math.abs(deltaY) < 0.5 &&
+      Math.abs(scaleX - 1) < 0.01 &&
+      Math.abs(scaleY - 1) < 0.01
+    ) {
+      return;
+    }
+
+    element.animate(
+      [
+        {
+          transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`,
+        },
+        {
+          transform: "translate(0, 0) scale(1, 1)",
+        },
+      ],
+      {
+        duration: sidebarTransitionDuration,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        fill: "both",
+      },
+    );
+  });
+};
+
+const clearPendingSidebarPin = () => {
+  if (pendingSidebarPinTimeout) {
+    window.clearTimeout(pendingSidebarPinTimeout);
+    pendingSidebarPinTimeout = 0;
+  }
+};
+
+const queueSidebarPin = () => {
+  if (pendingSidebarPinTimeout || document.body.classList.contains("has-sidebar")) {
+    return;
+  }
+
+  pendingSidebarPinTimeout = window.setTimeout(() => {
+    pendingSidebarPinTimeout = 0;
+
+    if (!desktopSidebarQuery.matches || window.scrollY < heroSidebarThreshold) {
+      return;
+    }
+
+    animateSidebarTransition(true);
+  }, 120);
+};
+
 const syncHeroSidebarState = () => {
   if (!contentGrid) {
+    clearPendingSidebarPin();
     document.body.classList.remove("has-sidebar");
     return;
   }
@@ -112,7 +195,20 @@ const syncHeroSidebarState = () => {
       : currentScrollY >= heroSidebarThreshold;
   }
 
-  document.body.classList.toggle("has-sidebar", shouldPinHero);
+  if (!shouldPinHero) {
+    clearPendingSidebarPin();
+  }
+
+  if (shouldPinHero === isPinned) {
+    return;
+  }
+
+  if (shouldPinHero) {
+    queueSidebarPin();
+    return;
+  }
+
+  animateSidebarTransition(false);
 };
 
 updateHeroSidebarThreshold();

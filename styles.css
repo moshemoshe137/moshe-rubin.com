@@ -44,7 +44,9 @@ a {
   padding: 4rem 1.5rem 3rem;
   transition:
     padding 260ms ease,
-    transform 260ms ease;
+    transform 260ms ease,
+    max-width 340ms ease;
+  transform-origin: top left;
 }
 
 .eyebrow,
@@ -102,16 +104,33 @@ h2 {
   max-width: 42rem;
   margin: 1.5rem 0 0;
   font-size: 1.15rem;
+  transition:
+    margin 260ms ease,
+    opacity 220ms ease,
+    transform 260ms ease,
+    max-height 260ms ease;
 }
 
 .hero-actions {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 0.9rem;
   margin-top: 2rem;
   transition:
     gap 260ms ease,
-    margin-top 260ms ease;
+    margin-top 260ms ease,
+    transform 260ms ease;
+  transform-origin: top left;
+  max-width: 100%;
+}
+
+.hero .eyebrow {
+  transition:
+    opacity 220ms ease,
+    transform 260ms ease,
+    max-height 260ms ease,
+    margin 260ms ease;
 }
 
 .button {
@@ -299,11 +318,18 @@ h2 {
     top: 1.5rem;
     padding: 1.5rem 0 0 1.5rem;
     align-self: start;
+    max-width: 17rem;
   }
 
   body.has-sidebar .hero .eyebrow,
   body.has-sidebar .hero .lede {
-    display: none;
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateX(-0.6rem);
+    pointer-events: none;
   }
 
   body.has-sidebar .hero h1 {
@@ -317,14 +343,9 @@ h2 {
 
   body.has-sidebar .hero-actions {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 0.75rem;
     margin-top: 1.25rem;
-  }
-
-  body.has-sidebar .button {
-    width: 100%;
-    min-width: 0;
   }
 
   body.has-sidebar .content-grid {
@@ -467,6 +488,8 @@ h2 {
 
 @media (prefers-reduced-motion: reduce) {
   .hero,
+  .hero .eyebrow,
+  .hero .lede,
   .hero-actions,
   .hero-cursor {
     transition: none;
