@@ -39,7 +39,7 @@ if (heroTitleText) {
       }
 
       const baseDelay = finalTitle[characterIndex] === " " ? 140 : 95;
-      const jitter = Math.floor(Math.random() * 500);
+      const jitter = Math.floor(Math.random() * 250);
       const occasionalPause = Math.random() < 0.22 ? 90 : 0;
       const nextDelay = baseDelay + jitter + occasionalPause;
 
