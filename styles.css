@@ -246,6 +246,11 @@ h2 {
   font-size: 0.95rem;
 }
 
+.prime-formula {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .heatmap-copy p:last-child {
   margin-bottom: 0;
 }
