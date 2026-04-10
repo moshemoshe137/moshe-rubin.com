@@ -32,7 +32,15 @@
             href="https://www.linkedin.com/in/moshe-rubin/"
             >LinkedIn</a
           >
-          <a class="button button-email" href="mailto:mosherubin137@gmail.com">Email</a>
+          <button
+            class="button button-email"
+            type="button"
+            data-open-contact
+            aria-haspopup="dialog"
+            aria-controls="contact-modal"
+          >
+            Email
+          </button>
         </div>
       </header>
 
@@ -68,6 +76,57 @@
       <footer class="site-footer">
         <p>&copy; <span id="current-year"></span> Moshe Rubin</p>
       </footer>
+    </div>
+
+    <div
+      class="modal"
+      id="contact-modal"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="contact-modal-title"
+    >
+      <div class="modal-backdrop" data-close-contact></div>
+      <div class="modal-panel">
+        <button
+          class="modal-close"
+          type="button"
+          aria-label="Close contact form"
+          data-close-contact
+        >
+          ×
+        </button>
+        <p class="section-label">Contact</p>
+        <h2 id="contact-modal-title">Send a note without leaving the site</h2>
+        <p class="modal-copy">This sends directly to my inbox from the page itself.</p>
+        <form class="contact-form" id="contact-form">
+          <label class="form-field">
+            <span>Name</span>
+            <input
+              type="text"
+              name="name"
+              autocomplete="name"
+              required
+              data-contact-first-field
+            />
+          </label>
+          <label class="form-field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label class="form-field">
+            <span>Message</span>
+            <textarea name="message" rows="6" required></textarea>
+          </label>
+          <p class="form-status" id="form-status" aria-live="polite"></p>
+          <div class="form-actions">
+            <button class="button button-email" type="submit">Send message</button>
+            <button class="button button-secondary" type="button" data-close-contact>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>

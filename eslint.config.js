@@ -8,6 +8,8 @@ module.exports = [
       ...js.configs.recommended.languageOptions,
       globals: {
         document: "readonly",
+        FormData: "readonly",
+        fetch: "readonly",
       },
     },
   },
