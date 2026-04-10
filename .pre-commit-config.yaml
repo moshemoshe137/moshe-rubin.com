@@ -54,6 +54,4 @@ repos:
     rev: v10.2.0
     hooks:
       - id: eslint
-        additional_dependencies:
-          - "eslint@10.2.0"
-          - "@eslint/js"
+        files: \.(css|js|mjs|cjs|json|jsonc|json5)$
