@@ -4,7 +4,7 @@ const contactForm = document.querySelector("#contact-form");
 const formStatus = document.querySelector("#form-status");
 const openContactButton = document.querySelector("[data-open-contact]");
 const closeContactButtons = document.querySelectorAll("[data-close-contact]");
-const formEndpoint = "https://formsubmit.co/ajax/mosherubin137@gmail.com";
+const formEndpoint = "https://formsubmit.co/ajax/1c288caac1d97b49f78246d936563080";
 
 if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
