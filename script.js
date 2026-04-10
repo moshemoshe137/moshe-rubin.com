@@ -4,10 +4,42 @@ const contactForm = document.querySelector("#contact-form");
 const formStatus = document.querySelector("#form-status");
 const openContactButton = document.querySelector("[data-open-contact]");
 const closeContactButtons = document.querySelectorAll("[data-close-contact]");
+const heroTitleText = document.querySelector("[data-hero-title-text]");
 const formEndpoint = "https://formsubmit.co/ajax/1c288caac1d97b49f78246d936563080";
 
 if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
+}
+
+if (heroTitleText) {
+  const finalTitle = "moshe rubin";
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (reducedMotionQuery.matches) {
+    heroTitleText.textContent = finalTitle;
+  } else {
+    heroTitleText.textContent = "";
+
+    let characterIndex = 0;
+
+    const typeNextCharacter = () => {
+      characterIndex += 1;
+      heroTitleText.textContent = finalTitle.slice(0, characterIndex);
+
+      if (characterIndex >= finalTitle.length) {
+        return;
+      }
+
+      const baseDelay = finalTitle[characterIndex] === " " ? 140 : 95;
+      const jitter = Math.floor(Math.random() * 500);
+      const occasionalPause = Math.random() < 0.22 ? 90 : 0;
+      const nextDelay = baseDelay + jitter + occasionalPause;
+
+      window.setTimeout(typeNextCharacter, nextDelay);
+    };
+
+    window.setTimeout(typeNextCharacter, 380);
+  }
 }
 
 const setFormStatus = (message, state = "") => {
