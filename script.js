@@ -6,9 +6,14 @@ const openContactButton = document.querySelector("[data-open-contact]");
 const closeContactButtons = document.querySelectorAll("[data-close-contact]");
 const heroTitleText = document.querySelector("[data-hero-title-text]");
 const cards = document.querySelectorAll(".card");
+const hero = document.querySelector(".hero");
+const heroLede = document.querySelector(".hero .lede");
+const contentGrid = document.querySelector(".content-grid");
 const formEndpoint = "https://formsubmit.co/ajax/1c288caac1d97b49f78246d936563080";
 
 document.documentElement.classList.add("js");
+
+const desktopSidebarQuery = window.matchMedia("(min-width: 900px)");
 
 if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
@@ -75,6 +80,62 @@ if (cards.length > 0) {
     });
   }
 }
+
+let heroSidebarThreshold = 0;
+const heroSidebarReleaseOffset = 96;
+
+const updateHeroSidebarThreshold = () => {
+  if (!hero) {
+    heroSidebarThreshold = 0;
+    return;
+  }
+
+  const thresholdTarget = heroLede ?? hero;
+  const thresholdTop = thresholdTarget.getBoundingClientRect().top + window.scrollY;
+
+  heroSidebarThreshold = Math.max(thresholdTop, 0);
+};
+
+const syncHeroSidebarState = () => {
+  if (!contentGrid) {
+    document.body.classList.remove("has-sidebar");
+    return;
+  }
+
+  const currentScrollY = window.scrollY;
+  const isPinned = document.body.classList.contains("has-sidebar");
+  let shouldPinHero = false;
+
+  if (desktopSidebarQuery.matches) {
+    shouldPinHero = isPinned
+      ? currentScrollY >= heroSidebarThreshold - heroSidebarReleaseOffset
+      : currentScrollY >= heroSidebarThreshold;
+  }
+
+  document.body.classList.toggle("has-sidebar", shouldPinHero);
+};
+
+updateHeroSidebarThreshold();
+syncHeroSidebarState();
+
+window.addEventListener("scroll", syncHeroSidebarState, { passive: true });
+
+if (typeof desktopSidebarQuery.addEventListener === "function") {
+  desktopSidebarQuery.addEventListener("change", () => {
+    updateHeroSidebarThreshold();
+    syncHeroSidebarState();
+  });
+} else if (typeof desktopSidebarQuery.addListener === "function") {
+  desktopSidebarQuery.addListener(() => {
+    updateHeroSidebarThreshold();
+    syncHeroSidebarState();
+  });
+}
+
+window.addEventListener("resize", () => {
+  updateHeroSidebarThreshold();
+  syncHeroSidebarState();
+});
 
 const setFormStatus = (message, state = "") => {
   if (!formStatus) {
