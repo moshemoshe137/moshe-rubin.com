@@ -194,6 +194,44 @@ h2 {
   grid-column: 1 / -1;
 }
 
+.heatmap-card {
+  display: grid;
+  grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.heatmap-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.heatmap-link {
+  display: block;
+  padding: 1rem;
+  border: 1px solid rgba(20, 90, 74, 0.16);
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(135deg, rgba(20, 90, 74, 0.08), rgba(255, 255, 255, 0.8)),
+    rgba(255, 255, 255, 0.82);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.heatmap-link:hover,
+.heatmap-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(20, 90, 74, 0.32);
+  box-shadow: var(--shadow);
+}
+
+.heatmap-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .site-footer {
   padding: 2rem 1.5rem 0;
 }
@@ -326,6 +364,10 @@ h2 {
   .card,
   .wide-card {
     grid-column: auto;
+  }
+
+  .heatmap-card {
+    grid-template-columns: 1fr;
   }
 
   .modal {
