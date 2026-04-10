@@ -1,0 +1,17 @@
+name: Weekly Pre-commit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * MON"
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
