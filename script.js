@@ -8,7 +8,7 @@ const heroTitleText = document.querySelector("[data-hero-title-text]");
 const cards = document.querySelectorAll(".card");
 const hero = document.querySelector(".hero");
 const heroLede = document.querySelector(".hero .lede");
-const heroEyebrow = document.querySelector(".hero .eyebrow");
+const heroSubtitle = document.querySelector(".hero .hero-subtitle");
 const heroTitle = document.querySelector(".hero h1");
 const heroActions = document.querySelector(".hero-actions");
 const contentGrid = document.querySelector(".content-grid");
@@ -103,7 +103,7 @@ const animateSidebarTransition = (nextPinned) => {
   const animatedElements = [
     hero,
     heroTitle,
-    heroEyebrow,
+    heroSubtitle,
     heroLede,
     heroActions,
     ...cards,

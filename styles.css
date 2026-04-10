@@ -91,14 +91,19 @@ a {
   transform-origin: top left;
 }
 
-.eyebrow,
+.hero-subtitle,
 .section-label {
   margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.section-label {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--brand);
 }
 
 h1,
@@ -167,7 +172,18 @@ h2 {
   max-width: 100%;
 }
 
-.hero .eyebrow {
+.hero-subtitle {
+  margin-top: 0.9rem;
+  max-width: 32rem;
+  line-height: 1.4;
+  transition:
+    opacity 220ms ease,
+    transform 260ms ease,
+    max-height 260ms ease,
+    margin 260ms ease;
+}
+
+.hero .hero-subtitle {
   transition:
     opacity 220ms ease,
     transform 260ms ease,
@@ -363,7 +379,7 @@ h2 {
     max-width: 17rem;
   }
 
-  body.has-sidebar .hero .eyebrow,
+  body.has-sidebar .hero .hero-subtitle,
   body.has-sidebar .hero .lede {
     max-height: 0;
     margin-top: 0;
@@ -535,7 +551,7 @@ h2 {
 
 @media (prefers-reduced-motion: reduce) {
   .hero,
-  .hero .eyebrow,
+  .hero .hero-subtitle,
   .hero .lede,
   .hero-actions,
   .hero-cursor {
