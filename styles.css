@@ -216,6 +216,16 @@ h2 {
   align-items: start;
 }
 
+.aside-card {
+  grid-column: 8 / -1;
+  padding: 1.2rem 1.4rem;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.aside-card p {
+  font-size: 0.95rem;
+}
+
 .heatmap-copy p:last-child {
   margin-bottom: 0;
 }
@@ -396,6 +406,10 @@ h2 {
 
   .card,
   .wide-card {
+    grid-column: auto;
+  }
+
+  .aside-card {
     grid-column: auto;
   }
 
