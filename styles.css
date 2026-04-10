@@ -9,6 +9,9 @@
   --line: rgba(31, 26, 23, 0.12);
   --brand: #145a4a;
   --brand-deep: #0d3d33;
+  --github-tint: rgba(20, 90, 74, 0.12);
+  --linkedin-tint: rgba(10, 102, 194, 0.12);
+  --email-tint: rgba(184, 100, 50, 0.14);
   --shadow: 0 20px 60px rgba(31, 26, 23, 0.08);
 }
 
@@ -96,33 +99,57 @@ h2 {
   min-width: 9rem;
   padding: 0.9rem 1.3rem;
   border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.45);
   text-decoration: none;
   font-weight: 700;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
-    background-color 180ms ease;
+    background-color 180ms ease,
+    border-color 180ms ease;
 }
 
 .button:hover,
 .button:focus-visible {
   transform: translateY(-2px);
-}
-
-.button-primary {
-  background: var(--brand);
-  color: #f7f5ef;
   box-shadow: var(--shadow);
 }
 
-.button-primary:hover,
-.button-primary:focus-visible {
-  background: var(--brand-deep);
+.button-github {
+  color: var(--brand);
+  background: var(--github-tint);
+  border-color: rgba(20, 90, 74, 0.24);
 }
 
-.button-secondary {
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.45);
+.button-github:hover,
+.button-github:focus-visible {
+  background: rgba(20, 90, 74, 0.18);
+  border-color: rgba(20, 90, 74, 0.36);
+}
+
+.button-linkedin {
+  color: #0a66c2;
+  background: var(--linkedin-tint);
+  border-color: rgba(10, 102, 194, 0.24);
+}
+
+.button-linkedin:hover,
+.button-linkedin:focus-visible {
+  background: rgba(10, 102, 194, 0.18);
+  border-color: rgba(10, 102, 194, 0.34);
+}
+
+.button-email {
+  color: #b86432;
+  background: var(--email-tint);
+  border-color: rgba(184, 100, 50, 0.24);
+}
+
+.button-email:hover,
+.button-email:focus-visible {
+  background: rgba(184, 100, 50, 0.2);
+  border-color: rgba(184, 100, 50, 0.34);
 }
 
 .content-grid {
