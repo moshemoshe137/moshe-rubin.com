@@ -1,4 +1,4 @@
-name: Weekly Pre-commit
+name: Pre-commit Hooks
 
 on:
   push:
