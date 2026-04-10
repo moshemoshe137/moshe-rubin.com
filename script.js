@@ -100,9 +100,14 @@ const updateHeroSidebarThreshold = () => {
 };
 
 const animateSidebarTransition = (nextPinned) => {
-  const animatedElements = [hero, heroTitle, heroEyebrow, heroLede, heroActions].filter(
-    Boolean,
-  );
+  const animatedElements = [
+    hero,
+    heroTitle,
+    heroEyebrow,
+    heroLede,
+    heroActions,
+    ...cards,
+  ].filter(Boolean);
 
   if (animatedElements.length === 0 || reducedMotionQuery.matches) {
     document.body.classList.toggle("has-sidebar", nextPinned);
