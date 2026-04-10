@@ -40,6 +40,48 @@ a {
   padding: 2rem 0 3rem;
 }
 
+.page-topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1.5rem;
+}
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.source-link:hover,
+.source-link:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(20, 90, 74, 0.28);
+  box-shadow: var(--shadow);
+  color: var(--brand);
+}
+
+.source-link-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+  flex: 0 0 auto;
+}
+
 .hero {
   padding: 4rem 1.5rem 3rem;
   transition:
@@ -352,6 +394,11 @@ h2 {
     padding: 0 1.5rem 0 0;
   }
 
+  body.has-sidebar .page-topbar {
+    grid-column: 1 / -1;
+    padding: 0 1.5rem 1rem;
+  }
+
   body.has-sidebar .site-footer {
     grid-column: 2;
     padding: 2rem 1.5rem 0 0;
@@ -511,6 +558,10 @@ h2 {
 }
 
 @media (max-width: 720px) {
+  .page-topbar {
+    padding: 0 0 0.5rem;
+  }
+
   .hero {
     padding-top: 3rem;
   }
