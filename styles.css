@@ -197,6 +197,19 @@ h2 {
   background: var(--surface);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
+  transition:
+    opacity 520ms ease,
+    transform 520ms ease;
+}
+
+.js .card {
+  opacity: 0;
+  transform: translateY(2.5rem);
+}
+
+.js .card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .accent-card {
@@ -392,6 +405,16 @@ h2 {
 @media (prefers-reduced-motion: reduce) {
   .hero-cursor {
     animation: none;
+  }
+
+  .card {
+    transition: none;
+  }
+
+  .js .card,
+  .js .card.is-visible {
+    opacity: 1;
+    transform: none;
   }
 }
 

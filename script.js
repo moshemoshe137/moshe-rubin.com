@@ -5,7 +5,10 @@ const formStatus = document.querySelector("#form-status");
 const openContactButton = document.querySelector("[data-open-contact]");
 const closeContactButtons = document.querySelectorAll("[data-close-contact]");
 const heroTitleText = document.querySelector("[data-hero-title-text]");
+const cards = document.querySelectorAll(".card");
 const formEndpoint = "https://formsubmit.co/ajax/1c288caac1d97b49f78246d936563080";
+
+document.documentElement.classList.add("js");
 
 if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
@@ -39,6 +42,37 @@ if (heroTitleText) {
     };
 
     window.setTimeout(typeNextCharacter, 380);
+  }
+}
+
+if (cards.length > 0) {
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
+    cards.forEach((card) => {
+      card.classList.add("is-visible");
+    });
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.18,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    cards.forEach((card) => {
+      observer.observe(card);
+    });
   }
 }
 
