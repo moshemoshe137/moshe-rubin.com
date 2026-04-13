@@ -94,9 +94,10 @@ const updateHeroSidebarThreshold = () => {
   }
 
   const thresholdTarget = heroLede ?? hero;
-  const thresholdTop = thresholdTarget.getBoundingClientRect().top + window.scrollY;
+  const thresholdBottom =
+    thresholdTarget.getBoundingClientRect().bottom + window.scrollY;
 
-  heroSidebarThreshold = Math.max(thresholdTop, 0);
+  heroSidebarThreshold = Math.max(thresholdBottom, 0);
 };
 
 const animateSidebarTransition = (nextPinned) => {
