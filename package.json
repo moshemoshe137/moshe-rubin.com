@@ -1,14 +1,14 @@
 {
-  "name": "moshemoshe137.github.io",
+  "name": "moshe-rubin.com",
   "version": "1.0.0",
   "description": "Moshe's website",
-  "homepage": "https://github.com/moshemoshe137/moshemoshe137.github.io#readme",
+  "homepage": "https://github.com/moshemoshe137/moshe-rubin.com#readme",
   "bugs": {
-    "url": "https://github.com/moshemoshe137/moshemoshe137.github.io/issues"
+    "url": "https://github.com/moshemoshe137/moshe-rubin.com/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moshemoshe137/moshemoshe137.github.io.git"
+    "url": "git+https://github.com/moshemoshe137/moshe-rubin.com.git"
   },
   "license": "MIT",
   "author": "Moshe Rubin",
