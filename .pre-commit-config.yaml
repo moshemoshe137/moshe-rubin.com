@@ -11,8 +11,6 @@ default_stages:
     post-rewrite,
   ]
 
-exclude: \.svg$
-
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
