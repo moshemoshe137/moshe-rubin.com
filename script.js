@@ -86,21 +86,46 @@ if (cards.length > 0) {
 let heroSidebarThreshold = 0;
 const heroSidebarReleaseOffset = 96;
 let pendingSidebarPinTimeout = 0;
+let isSidebarTransitioning = false;
+let lastScrollY = window.scrollY;
+let sidebarReleaseLock = false;
 
 const updateHeroSidebarThreshold = () => {
-  if (!hero) {
+  if (!hero || !contentGrid) {
     heroSidebarThreshold = 0;
     return;
   }
 
-  const thresholdTarget = heroLede ?? hero;
-  const thresholdBottom =
-    thresholdTarget.getBoundingClientRect().bottom + window.scrollY;
+  const wasPinned = document.body.classList.contains("has-sidebar");
 
-  heroSidebarThreshold = Math.max(thresholdBottom, 0);
+  if (wasPinned) {
+    document.body.classList.remove("has-sidebar");
+  }
+
+  const thresholdTop = contentGrid.getBoundingClientRect().top + window.scrollY;
+
+  heroSidebarThreshold = Math.max(thresholdTop, 0);
+
+  if (wasPinned) {
+    document.body.classList.add("has-sidebar");
+  }
+};
+
+const getScrollAnchor = () => {
+  const viewportPadding = 24;
+  const visibleCard = [...cards].find((card) => {
+    const rect = card.getBoundingClientRect();
+    return rect.bottom > viewportPadding;
+  });
+
+  return visibleCard ?? contentGrid ?? hero ?? document.body;
 };
 
 const animateSidebarTransition = (nextPinned) => {
+  if (isSidebarTransitioning) {
+    return;
+  }
+
   const animatedElements = [
     hero,
     heroTitle,
@@ -115,11 +140,25 @@ const animateSidebarTransition = (nextPinned) => {
     return;
   }
 
+  isSidebarTransitioning = true;
+  const scrollAnchor = getScrollAnchor();
+  const anchorTopBefore = scrollAnchor.getBoundingClientRect().top;
   const firstRects = new Map(
     animatedElements.map((element) => [element, element.getBoundingClientRect()]),
   );
 
   document.body.classList.toggle("has-sidebar", nextPinned);
+
+  const anchorTopAfter = scrollAnchor.getBoundingClientRect().top;
+  const scrollAdjustment = anchorTopAfter - anchorTopBefore;
+
+  if (Math.abs(scrollAdjustment) > 0.5) {
+    window.scrollBy(0, scrollAdjustment);
+  }
+
+  lastScrollY = window.scrollY;
+
+  let remainingAnimations = 0;
 
   animatedElements.forEach((element) => {
     const firstRect = firstRects.get(element);
@@ -143,7 +182,9 @@ const animateSidebarTransition = (nextPinned) => {
       return;
     }
 
-    element.animate(
+    remainingAnimations += 1;
+
+    const animation = element.animate(
       [
         {
           transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`,
@@ -158,7 +199,23 @@ const animateSidebarTransition = (nextPinned) => {
         fill: "both",
       },
     );
+
+    animation.addEventListener(
+      "finish",
+      () => {
+        remainingAnimations -= 1;
+
+        if (remainingAnimations === 0) {
+          isSidebarTransitioning = false;
+        }
+      },
+      { once: true },
+    );
   });
+
+  if (remainingAnimations === 0) {
+    isSidebarTransitioning = false;
+  }
 };
 
 const clearPendingSidebarPin = () => {
@@ -169,37 +226,53 @@ const clearPendingSidebarPin = () => {
 };
 
 const queueSidebarPin = () => {
-  if (pendingSidebarPinTimeout || document.body.classList.contains("has-sidebar")) {
+  if (document.body.classList.contains("has-sidebar")) {
     return;
   }
 
-  pendingSidebarPinTimeout = window.setTimeout(() => {
-    pendingSidebarPinTimeout = 0;
+  clearPendingSidebarPin();
 
-    if (!desktopSidebarQuery.matches || window.scrollY < heroSidebarThreshold) {
-      return;
-    }
+  if (!desktopSidebarQuery.matches || window.scrollY < heroSidebarThreshold) {
+    return;
+  }
 
-    animateSidebarTransition(true);
-  }, 120);
+  animateSidebarTransition(true);
 };
 
 const syncHeroSidebarState = () => {
   if (!contentGrid) {
     clearPendingSidebarPin();
     document.body.classList.remove("has-sidebar");
+    lastScrollY = window.scrollY;
+    sidebarReleaseLock = false;
+    return;
+  }
+
+  if (isSidebarTransitioning) {
+    lastScrollY = window.scrollY;
     return;
   }
 
   const currentScrollY = window.scrollY;
   const isPinned = document.body.classList.contains("has-sidebar");
+  const isScrollingUp = currentScrollY < lastScrollY;
   let shouldPinHero = false;
 
-  if (desktopSidebarQuery.matches) {
-    shouldPinHero = isPinned
-      ? currentScrollY >= heroSidebarThreshold - heroSidebarReleaseOffset
-      : currentScrollY >= heroSidebarThreshold;
+  if (!isScrollingUp) {
+    sidebarReleaseLock = false;
   }
+
+  if (desktopSidebarQuery.matches) {
+    if (isPinned) {
+      shouldPinHero =
+        !isScrollingUp ||
+        currentScrollY >= heroSidebarThreshold - heroSidebarReleaseOffset;
+    } else {
+      shouldPinHero = !sidebarReleaseLock && currentScrollY >= heroSidebarThreshold;
+    }
+  }
+
+  lastScrollY = currentScrollY;
 
   if (!shouldPinHero) {
     clearPendingSidebarPin();
@@ -212,6 +285,10 @@ const syncHeroSidebarState = () => {
   if (shouldPinHero) {
     queueSidebarPin();
     return;
+  }
+
+  if (isPinned && isScrollingUp) {
+    sidebarReleaseLock = true;
   }
 
   animateSidebarTransition(false);
